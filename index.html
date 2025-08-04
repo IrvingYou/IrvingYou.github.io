@@ -1,28 +1,36 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Irving You</title>
+    <meta charset="utf-8">
+    <title>Your Name - Homepage</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <header>
-        <h1>张三</h1>
-        <nav>
-            <a href="index.html">主页</a>
-            <a href="about.html">关于</a>
-            <a href="blog/index.html">博客</a>
-        </nav>
-    </header>
-    
-    <main>
-        <h2>欢迎</h2>
-        <p>我是XX大学的博士研究生，研究方向是机器学习与数据挖掘。</p>
-    </main>
-    
-    <footer>
-        <p>© 2025 张三 | 邮箱：zhangsan@example.com</p>
-    </footer>
+    <div class="container">
+        <div class="sidebar">
+            <h1>Your Name</h1>
+            <img src="images/photo.jpg" alt="Photo" class="photo">
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="research.html">Research</a></li>
+                    <li><a href="teaching.html">Teaching</a></li>
+                    <li><a href="blog/index.html">Blog</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="main">
+            <h2>Welcome</h2>
+            <p>I'm an Assistant Professor at [Your University], working on [your research area].</p>
+            
+            <h2>News</h2>
+            <ul class="news">
+                <li><span class="date">2025-08-01</span> Paper accepted at Journal of XYZ!</li>
+                <li><span class="date">2025-07-15</span> Gave a talk at ABC Conference</li>
+            </ul>
+        </div>
+    </div>
 </body>
 </html>
