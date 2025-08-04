@@ -1,0 +1,50 @@
+/* 全局样式 */
+body {
+    font-family: 'Times New Roman', serif;
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    color: #333;
+}
+
+/* 页眉样式 */
+header {
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+}
+
+/* 导航链接 */
+nav a {
+    margin: 0 15px;
+    text-decoration: none;
+    color: #0066cc;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+/* 页脚样式 */
+footer {
+    margin-top: 50px;
+    text-align: center;
+    color: #666;
+    font-size: 0.9em;
+}
+
+/* 博客文章 */
+article {
+    margin-bottom: 40px;
+}
+
+.date {
+    color: #666;
+    font-size: 0.9em;
+}
+
+.content {
+    margin-top: 20px;
+}
