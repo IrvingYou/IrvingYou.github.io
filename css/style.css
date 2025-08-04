@@ -1,50 +1,80 @@
-/* 全局样式 */
+/* 基础设置 */
 body {
-    font-family: 'Times New Roman', serif;
+    font-family: "Palatino Linotype", "Book Antiqua", serif;
     line-height: 1.6;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
     color: #333;
+    margin: 0;
+    padding: 0;
 }
 
-/* 页眉样式 */
-header {
-    text-align: center;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 20px;
-    margin-bottom: 30px;
+.container {
+    display: flex;
+    max-width: 1000px;
+    margin: 0 auto;
 }
 
-/* 导航链接 */
+/* 侧边栏样式 */
+.sidebar {
+    width: 220px;
+    padding: 20px;
+    position: fixed;
+}
+
+.photo {
+    width: 150px;
+    border-radius: 50%;
+    margin: 20px 0;
+    border: 3px solid #eee;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+nav li {
+    margin: 10px 0;
+}
+
 nav a {
-    margin: 0 15px;
     text-decoration: none;
-    color: #0066cc;
+    color: #2c3e50;
+    font-size: 1.1em;
 }
 
 nav a:hover {
-    text-decoration: underline;
+    border-bottom: 1px dashed #2c3e50;
 }
 
-/* 页脚样式 */
-footer {
-    margin-top: 50px;
-    text-align: center;
-    color: #666;
-    font-size: 0.9em;
+/* 主内容区 */
+.main {
+    margin-left: 260px;
+    padding: 20px;
+    width: calc(100% - 300px);
 }
 
-/* 博客文章 */
-article {
-    margin-bottom: 40px;
+h1, h2 {
+    color: #2c3e50;
 }
 
-.date {
-    color: #666;
-    font-size: 0.9em;
+.news .date {
+    color: #7f8c8d;
+    display: inline-block;
+    width: 80px;
 }
 
-.content {
-    margin-top: 20px;
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+    .sidebar {
+        position: static;
+        width: auto;
+        text-align: center;
+    }
+    .main {
+        margin-left: 0;
+        width: auto;
+    }
 }
