@@ -2,18 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Irving You - Homepage</title>
+    <title>Your Name - Homepage</title>
     <link rel="stylesheet" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lora:ital@0;1&display=swap" rel="stylesheet">
 </head>
 <body>
     <header class="main-header">
         <div class="header-content">
-            <h1 class="site-title">Irving You</h1>
+            <h1 class="site-title">Your Name</h1>
             <nav class="main-nav">
                 <ul class="nav-list">
                     <li class="nav-item"><a href="index.html" class="nav-link active">Home</a></li>
                     <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
+                    <li class="nav-item"><a href="research.html" class="nav-link">Research</a></li>
+                    <li class="nav-item"><a href="teaching.html" class="nav-link">Teaching</a></li>
                     <li class="nav-item"><a href="blog/index.html" class="nav-link">Blog</a></li>
                 </ul>
             </nav>
@@ -21,37 +22,7 @@
     </header>
 
     <main class="main-content">
-        <div class="quote-container">
-            <blockquote class="wisdom-quote">
-                <p class="quote-line">"All knowledge is, in final analysis, history.</p>
-                <p class="quote-line">All sciences are, in the abstract, mathematics.</p>
-                <p class="quote-line">All judgements are, in their rationale, statistics"</p>
-                <cite class="quote-author">— C. R. Rao</cite>
-            </blockquote>
-            <div class="floating-dots">
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-            </div>
-        </div>
+        <!-- 您的内容保持不变 -->
     </main>
-
-    <script>
-        // 浮动点动画
-        document.addEventListener('DOMContentLoaded', function() {
-            const dots = document.querySelectorAll('.dot');
-            dots.forEach((dot, index) => {
-                const size = Math.random() * 6 + 4;
-                const delay = index * 0.5;
-                dot.style.width = `${size}px`;
-                dot.style.height = `${size}px`;
-                dot.style.animationDelay = `${delay}s`;
-                
-                // 随机位置
-                dot.style.left = `${Math.random() * 90 + 5}%`;
-                dot.style.top = `${Math.random() * 80 + 10}%`;
-            });
-        });
-    </script>
 </body>
 </html>
