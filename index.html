@@ -4,25 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Irving You</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- 蓝色顶部栏 -->
-    <div class="navbar">
+    <!-- Header -->
+    <div class="header">
         <div class="logo">Irving You</div>
-        <div class="links">
-            <a href="index.html">home</a>
-            <a href="blog.html">blog</a>
-            <a href="about.html">about</a>
-        </div>
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="blog.html">Blog</a>
+            <a href="about.html">About</a>
+        </nav>
     </div>
 
-    <!-- 白色内容部分 -->
-    <div class="content">
-        <p class="quote">
-            "All knowledge is, in final analysis, history. All sciences are, in the abstract, mathematics. 
-            All judgements are, in their rationale, statistics — C. R. Rao"
-        </p>
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Home Page -->
+        <div class="page-content active" id="home">
+            <div class="quote">
+                <div class="quote-line">All knowledge is, in final analysis, history.</div>
+                <div class="quote-line">All sciences are, in the abstract, mathematics.</div>
+                <div class="quote-line">All judgements are, in their rationale, statistics.</div>
+                <div class="quote-author">— C. R. Rao</div>
+            </div>
+        </div>
     </div>
 </body>
 </html>
