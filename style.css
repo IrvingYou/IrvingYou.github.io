@@ -121,17 +121,120 @@ body {
     display: none;
     max-width: 1000px;
     width: 100%;
-    text-align: center;
+    text-align: left;
 }
 
 .blog-content.active {
     display: block;
 }
 
-.blog-placeholder {
+.blog-content h1 {
+    margin-bottom: 2rem;
+    font-family: 'Lora', serif;
+    font-size: 2rem;
+}
+
+.post-list {
+    list-style: none;
+}
+
+.post-list li {
+    border-bottom: 1px solid #e5e5e5;
+    padding: 1.5rem 0;
+}
+
+.post-list li:first-child {
+    padding-top: 0;
+}
+
+.post-list a {
+    color: #1B5E83;
+    font-family: 'Lora', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.post-list a:hover {
+    color: #CC9900;
+}
+
+.post-list time,
+.post-content time {
+    display: block;
+    margin: 0.35rem 0 0.7rem;
+    color: #666;
+    font-size: 0.95rem;
+}
+
+.post-list p {
+    color: #333;
+    line-height: 1.6;
+}
+
+.empty-posts {
     color: #666;
     font-size: 1.2rem;
     font-style: italic;
+}
+
+.post-content {
+    max-width: 760px;
+    width: 100%;
+    color: #111;
+    line-height: 1.75;
+}
+
+.post-content h1,
+.post-content h2,
+.post-content h3 {
+    margin: 1.5rem 0 1rem;
+    font-family: 'Lora', serif;
+    line-height: 1.3;
+}
+
+.post-content h1 {
+    font-size: 2.2rem;
+}
+
+.post-content p,
+.post-content ul,
+.post-content pre {
+    margin-bottom: 1rem;
+}
+
+.post-content ul {
+    padding-left: 1.5rem;
+}
+
+.post-content a,
+.back-link {
+    color: #1B5E83;
+}
+
+.post-content code {
+    background-color: #f4f4f4;
+    border-radius: 4px;
+    padding: 0.1rem 0.3rem;
+    font-size: 0.95em;
+}
+
+.post-content pre {
+    overflow-x: auto;
+    background-color: #f4f4f4;
+    border-radius: 6px;
+    padding: 1rem;
+}
+
+.post-content pre code {
+    background: none;
+    padding: 0;
+}
+
+.back-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    text-decoration: none;
 }
 
 /* Page content sections */
