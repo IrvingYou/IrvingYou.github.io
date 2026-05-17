@@ -1,5 +1,43 @@
 This is my blog.
 
+## Writing Preview
+
+Start the local browser editor:
+
+```bash
+python scripts/editor.py
+```
+
+Then open:
+
+```text
+http://localhost:8000/editor/
+```
+
+Use the editor to create posts, write Markdown with a live preview, and save.
+Saving writes to `blog/posts/` and rebuilds the generated HTML.
+
+Create a new Markdown draft:
+
+```bash
+python scripts/new_post.py "My Post Title"
+```
+
+Start a local preview server:
+
+```bash
+python scripts/preview_blog.py
+```
+
+Then open:
+
+```text
+http://localhost:8000/blog/
+```
+
+Keep the preview command running while you write. When you save files in
+`blog/posts/`, the preview script rebuilds the generated HTML automatically.
+
 ## Updating the Blog
 
 1. Add a Markdown file in `blog/posts/`.

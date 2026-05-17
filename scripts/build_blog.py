@@ -200,6 +200,11 @@ def main():
     ARTICLES_DIR.mkdir(parents=True, exist_ok=True)
     posts = [read_post(path) for path in sorted(POSTS_DIR.glob("*.md"))]
     posts.sort(key=lambda post: post.date, reverse=True)
+    article_slugs = {post.slug for post in posts}
+
+    for article in ARTICLES_DIR.glob("*.html"):
+        if article.stem not in article_slugs:
+            article.unlink()
 
     for post in posts:
         (ARTICLES_DIR / f"{post.slug}.html").write_text(render_article(post), encoding="utf-8")
