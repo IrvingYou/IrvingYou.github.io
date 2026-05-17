@@ -153,10 +153,15 @@ def page_shell(title, content, stylesheet_path, home_path, blog_path, about_path
             tex: {{
                 inlineMath: [["$", "$"], ["\\\\(", "\\\\)"]],
                 displayMath: [["$$", "$$"], ["\\\\[", "\\\\]"]]
+            }},
+            startup: {{
+                pageReady: () => MathJax.startup.defaultPageReady().then(() => {{
+                    window.mathJaxReady = true;
+                }})
             }}
         }};
     </script>
-    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" onerror="document.documentElement.dataset.mathjax = 'failed';"></script>
 </head>
 <body>
     <div class="header">

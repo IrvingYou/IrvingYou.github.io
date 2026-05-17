@@ -28,10 +28,18 @@ EDITOR_HTML = """<!DOCTYPE html>
             tex: {
                 inlineMath: [["$", "$"], ["\\\\(", "\\\\)"]],
                 displayMath: [["$$", "$$"], ["\\\\[", "\\\\]"]]
+            },
+            startup: {
+                pageReady: () => MathJax.startup.defaultPageReady().then(() => {
+                    window.mathJaxReady = true;
+                    if (window.renderPreview) {
+                        window.renderPreview();
+                    }
+                })
             }
         };
     </script>
-    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" onerror="window.mathJaxFailed = true; if (window.setStatus) window.setStatus('MathJax failed to load');"></script>
     <style>
         * { box-sizing: border-box; }
         body {
@@ -368,13 +376,17 @@ EDITOR_HTML = """<!DOCTYPE html>
             finalLink.href = `/blog/articles/${encodeURIComponent(fields.slug.value || "untitled")}.html`;
             if (window.MathJax && window.MathJax.typesetPromise) {
                 window.MathJax.typesetClear([preview]);
-                window.MathJax.typesetPromise([preview]);
+                window.MathJax.typesetPromise([preview]).catch(() => {
+                    setStatus("MathJax render failed");
+                });
             }
         }
+        window.renderPreview = renderPreview;
 
         function setStatus(text) {
             statusEl.textContent = text;
         }
+        window.setStatus = setStatus;
 
         function setDirty(value) {
             state.dirty = value;
