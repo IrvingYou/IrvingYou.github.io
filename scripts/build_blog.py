@@ -10,6 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 POSTS_DIR = ROOT / "blog" / "posts"
 ARTICLES_DIR = ROOT / "blog" / "articles"
 BLOG_INDEX = ROOT / "blog" / "index.html"
+MATH_PATTERN = re.compile(r"(\$\$.*?\$\$|\\\[.*?\\\]|\\\(.*?\\\)|\$(?!\$)[^\n$]+\$)", re.DOTALL)
 
 
 @dataclass
@@ -36,16 +37,25 @@ def parse_front_matter(text):
 
 
 def inline_markdown(text):
-    escaped = html.escape(text)
-    escaped = re.sub(r"`([^`]+)`", r"<code>\1</code>", escaped)
-    escaped = re.sub(r"\*\*([^*]+)\*\*", r"<strong>\1</strong>", escaped)
-    escaped = re.sub(r"\*([^*]+)\*", r"<em>\1</em>", escaped)
-    escaped = re.sub(
-        r"\[([^\]]+)\]\(([^)]+)\)",
-        lambda match: f'<a href="{html.escape(match.group(2), quote=True)}">{match.group(1)}</a>',
-        escaped,
-    )
-    return escaped
+    parts = MATH_PATTERN.split(text)
+    rendered = []
+    for part in parts:
+        if not part:
+            continue
+        if MATH_PATTERN.fullmatch(part):
+            rendered.append(html.escape(part))
+            continue
+        escaped = html.escape(part)
+        escaped = re.sub(r"`([^`]+)`", r"<code>\1</code>", escaped)
+        escaped = re.sub(r"\*\*([^*]+)\*\*", r"<strong>\1</strong>", escaped)
+        escaped = re.sub(r"\*([^*]+)\*", r"<em>\1</em>", escaped)
+        escaped = re.sub(
+            r"\[([^\]]+)\]\(([^)]+)\)",
+            lambda match: f'<a href="{html.escape(match.group(2), quote=True)}">{match.group(1)}</a>',
+            escaped,
+        )
+        rendered.append(escaped)
+    return "".join(rendered)
 
 
 def markdown_to_html(markdown):
@@ -138,6 +148,15 @@ def page_shell(title, content, stylesheet_path, home_path, blog_path, about_path
     <title>{html.escape(title)} - Irving You</title>
     <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{stylesheet_path}">
+    <script>
+        window.MathJax = {{
+            tex: {{
+                inlineMath: [["$", "$"], ["\\\\(", "\\\\)"]],
+                displayMath: [["$$", "$$"], ["\\\\[", "\\\\]"]]
+            }}
+        }};
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
 </head>
 <body>
     <div class="header">

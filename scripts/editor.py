@@ -23,6 +23,15 @@ EDITOR_HTML = """<!DOCTYPE html>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog Editor</title>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [["$", "$"], ["\\\\(", "\\\\)"]],
+                displayMath: [["$$", "$$"], ["\\\\[", "\\\\]"]]
+            }
+        };
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
     <style>
         * { box-sizing: border-box; }
         body {
@@ -274,12 +283,17 @@ EDITOR_HTML = """<!DOCTYPE html>
         }
 
         function inlineMarkdown(text) {
-            let value = escapeHtml(text);
-            value = value.replace(/`([^`]+)`/g, "<code>$1</code>");
-            value = value.replace(/\\*\\*([^*]+)\\*\\*/g, "<strong>$1</strong>");
-            value = value.replace(/\\*([^*]+)\\*/g, "<em>$1</em>");
-            value = value.replace(/\\[([^\\]]+)\\]\\(([^)]+)\\)/g, '<a href="$2">$1</a>');
-            return value;
+            const mathPattern = /(\\$\\$[\\s\\S]*?\\$\\$|\\\\\\[[\\s\\S]*?\\\\\\]|\\\\\\([\\s\\S]*?\\\\\\)|\\$(?!\\$)[^\\n$]+\\$)/g;
+            return text.split(mathPattern).map(part => {
+                if (!part) return "";
+                if (part.match(mathPattern)) return escapeHtml(part);
+                let value = escapeHtml(part);
+                value = value.replace(/`([^`]+)`/g, "<code>$1</code>");
+                value = value.replace(/\\*\\*([^*]+)\\*\\*/g, "<strong>$1</strong>");
+                value = value.replace(/\\*([^*]+)\\*/g, "<em>$1</em>");
+                value = value.replace(/\\[([^\\]]+)\\]\\(([^)]+)\\)/g, '<a href="$2">$1</a>');
+                return value;
+            }).join("");
         }
 
         function markdownToHtml(markdown) {
@@ -352,6 +366,10 @@ EDITOR_HTML = """<!DOCTYPE html>
             const body = fields.body.value.trim() || `# ${title}\\n\\n`;
             preview.innerHTML = `<time datetime="${escapeHtml(date)}">${escapeHtml(date)}</time>${markdownToHtml(body)}`;
             finalLink.href = `/blog/articles/${encodeURIComponent(fields.slug.value || "untitled")}.html`;
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                window.MathJax.typesetClear([preview]);
+                window.MathJax.typesetPromise([preview]);
+            }
         }
 
         function setStatus(text) {
