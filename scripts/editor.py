@@ -711,10 +711,11 @@ summary: {summary}
 
 def main():
     build_blog()
-    server = ThreadingHTTPPServer(("", PORT), EditorHandler)
+    server = ThreadingHTTPServer(("", PORT), EditorHandler)
     print(f"Editor: http://localhost:{PORT}/editor/")
     print("Press Ctrl+C to stop.")
     server.serve_forever()
+
 
 if __name__ == "__main__":
     main()
