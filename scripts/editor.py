@@ -125,6 +125,17 @@ EDITOR_HTML = """<!DOCTYPE html>
             background: #fff;
             color: #1B5E83;
         }
+        .button.danger {
+            border-color: #b42318;
+            background: #fff;
+            color: #b42318;
+        }
+        .button:disabled {
+            border-color: #cbd5df;
+            background: #eef2f6;
+            color: #98a2b3;
+            cursor: not-allowed;
+        }
         .editor-grid {
             display: grid;
             grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -229,6 +240,7 @@ EDITOR_HTML = """<!DOCTYPE html>
                 <div class="status" id="status">Ready</div>
                 <div>
                     <a class="final-link" id="finalLink" href="/blog/" target="_blank">Blog</a>
+                    <button class="button danger" id="deletePost" disabled>Delete</button>
                     <button class="button secondary" id="savePost">Save</button>
                 </div>
             </div>
@@ -274,6 +286,7 @@ EDITOR_HTML = """<!DOCTYPE html>
         const preview = document.getElementById("preview");
         const statusEl = document.getElementById("status");
         const finalLink = document.getElementById("finalLink");
+        const deleteButton = document.getElementById("deletePost");
 
         function today() {
             return new Date().toISOString().slice(0, 10);
@@ -391,6 +404,7 @@ EDITOR_HTML = """<!DOCTYPE html>
         function setDirty(value) {
             state.dirty = value;
             setStatus(value ? "Unsaved changes" : "Saved");
+            deleteButton.disabled = !state.originalPath;
         }
 
         function readForm() {
@@ -481,8 +495,34 @@ EDITOR_HTML = """<!DOCTYPE html>
             setStatus(`Saved. Final page: ${result.article}`);
         }
 
+        async function deletePost() {
+            if (!state.originalPath) {
+                setStatus("No saved post selected");
+                return;
+            }
+            const title = fields.title.value.trim() || "this post";
+            if (!confirm(`Delete "${title}"? This cannot be undone.`)) return;
+
+            setStatus("Deleting...");
+            const response = await fetch("/api/delete", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ path: state.originalPath }),
+            });
+            const result = await response.json();
+            if (!response.ok) {
+                setStatus(result.error || "Delete failed");
+                return;
+            }
+            state.originalPath = null;
+            await loadPosts();
+            newPost();
+            setStatus(`Deleted ${result.path}`);
+        }
+
         document.getElementById("newPost").addEventListener("click", newPost);
         document.getElementById("savePost").addEventListener("click", savePost);
+        deleteButton.addEventListener("click", deletePost);
         fields.title.addEventListener("input", () => {
             if (!state.originalPath && (!fields.slug.value || fields.slug.value === "untitled")) {
                 fields.slug.value = slugify(fields.title.value);
@@ -604,6 +644,9 @@ class EditorHandler(SimpleHTTPRequestHandler):
 
     def do_POST(self):
         parsed = urlparse(self.path)
+        if parsed.path == "/api/delete":
+            self.delete_post()
+            return
         if parsed.path != "/api/save":
             json_response(self, 404, {"error": "Not found"})
             return
@@ -649,14 +692,29 @@ summary: {summary}
             "article": f"/blog/articles/{html.escape(slug)}.html",
         })
 
+    def delete_post(self):
+        try:
+            length = int(self.headers.get("Content-Length", "0"))
+            payload = json.loads(self.rfile.read(length).decode("utf-8"))
+            path = safe_post_path(payload.get("path", ""))
+            if not path.exists():
+                raise ValueError("Post not found")
+            deleted_path = str(path.relative_to(ROOT)).replace("\\", "/")
+            path.unlink()
+            build_blog()
+        except (json.JSONDecodeError, OSError, subprocess.CalledProcessError, ValueError) as error:
+            json_response(self, 400, {"error": str(error)})
+            return
+
+        json_response(self, 200, {"path": deleted_path})
+
 
 def main():
     build_blog()
-    server = ThreadingHTTPServer(("", PORT), EditorHandler)
+    server = ThreadingHTTPPServer(("", PORT), EditorHandler)
     print(f"Editor: http://localhost:{PORT}/editor/")
     print("Press Ctrl+C to stop.")
     server.serve_forever()
-
 
 if __name__ == "__main__":
     main()
